@@ -11,6 +11,7 @@ public class GameManager {
     private static final String PLAYER_STATUS_MESSAGE = "%s: %s(HP %d)";
     private static final String RESULT_MESSAGE = "%sの勝利！！";
     private static final String BLANK_LINE = "";
+    private Scanner scan = new Scanner(System.in);
 
     public static enum Teams {
         Player,
@@ -18,9 +19,8 @@ public class GameManager {
     };
 
     public void start() {
-        Scanner scan = new Scanner(System.in);
-        Chara player = makeChara(scan, Teams.Player);
-        Chara enemy = makeChara(scan, Teams.Enemy);
+        Chara player = makeChara(Teams.Player);
+        Chara enemy = makeChara(Teams.Enemy);
         player.showStatsu();
         enemy.showStatsu();
         showBlankLine();
@@ -39,12 +39,12 @@ public class GameManager {
         showResult(player, enemy);
     }
 
-    private Chara makeChara(Scanner scan, Teams team) {
-        String name = this.getInputName(scan, team);
+    private Chara makeChara(Teams team) {
+        String name = this.getInputName(team);
         return new Chara(name, team);
     }
 
-    private String getInputName(Scanner scan, Teams team) {
+    private String getInputName(Teams team) {
         String name = "";
         while (isBlank(name)) {
             showGetInputNameMessage(team);
@@ -96,10 +96,10 @@ public class GameManager {
     }
 
     private boolean isFinish(Chara player, Chara enemy) {
-        if (player.getHp() == 0) {
+        if (player.isDown()) {
             return true;
         }
-        if (enemy.getHp() == 0) {
+        if (enemy.isDown()) {
             return true;
         }
         return false;
@@ -111,7 +111,7 @@ public class GameManager {
     }
 
     private Chara getWinner(Chara player, Chara enemy) {
-        if (player.getHp() == 0) {
+        if (player.isDown()) {
             return enemy;
         }
         return player;

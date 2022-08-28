@@ -100,7 +100,7 @@ public class Chara {
         return false;
     }
 
-    private boolean isDown() {
+    public boolean isDown() {
         return this.hp <= 0;
     }
 
